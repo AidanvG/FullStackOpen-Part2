@@ -17,12 +17,16 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newPerson = {
-      name: newName,
-      id: persons.length + 1
+    if (persons.find(({name}) => name === newName) === undefined) {
+      const newPerson = {
+        name: newName,
+        id: persons.length + 1
+      }
+      setPersons(persons.concat(newPerson));
+      setNewName("");
+    } else {
+      alert(`${newName} had already been added to the phonebook`);
     }
-    setPersons(persons.concat(newPerson));
-    setNewName("");
   }
 
   return (
