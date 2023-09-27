@@ -1,24 +1,8 @@
 import { useState } from 'react'
+import Display from './Components/Display';
+import Search from './Components/Search';
+import PersonForm from './Components/PersonForm';
 
-const Display = ({search, persons}) => {
-  if (search === "") {
-    return persons.map(person => <li key={person.id}>{person.name} {person.number}</li>);
-  }
-  
-  const firstNameMatches = persons.filter(person => person.name.toUpperCase().startsWith(search.toUpperCase()))
-  .map(person => <li key={person.id}>{person.name} {person.number}</li>);
-
-  const lastNameMatches = persons.filter(person => person.name.slice(person.name.indexOf(' ') + 1).toUpperCase().startsWith(search.toUpperCase()))
-  .map(person => <li key={person.id}>{person.name} {person.number}</li>);
-
-  const results = firstNameMatches.concat(lastNameMatches);
-
-  if (results.length === 0) {
-    return <p>No results found</p>
-  }
-
-  return results;
-}
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -54,19 +38,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with<input type="text" onChange={handleSearchChange} value={search} /></div>
-      <h2>add a new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>name: <input type="text" onChange={handleNameChange} value={newName}/></div>
-        <div>number: <input type="text" onChange={handleNumberChange} value={newNumber}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Search handleSearchChange={handleSearchChange} search={search} />
+
+      <h2>Add new contact</h2>
+      <PersonForm handleSubmit={handleSubmit} handleNameChange={handleNameChange} newName={newName} handleNumberChange={handleNumberChange} />
+
       <h2>Numbers</h2>
       <ul style={{listStyleType: "none", padding: "0px"}}>
         <Display search={search} persons={persons} />
-        {/* {persons.map(person => <li key={person.id}>{person.name} {person.number}</li>)} */}
       </ul>
     </div>
   )
